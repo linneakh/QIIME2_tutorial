@@ -1,17 +1,24 @@
 # Qiime tools was created by Linnea Honeker (linneah@arizona.edu) in order to streamline QIIME2 analysis into modules of slurm or bash scripts. 
 # They are intended to be run in the following order:
 
-1. demultiplex.sh
+1. demultiplex.slurm
+	- demultiplexes sequences
 
-2. denoise-to-tree.sh
+2. denoise-to-tree.slurm
+	- performs dada2 seequence varient identification, aligns rep-seqs, makes phylogenetic tree
 
-3. taxonomy.sh
+3. taxonomy.slurm
+	- performs taxonomic identification, and exports feature-tables for each phylogenetic level
 
-4. filter-mito.sh (filteres out mitochondrial reads and unclassified bacteria sp. which are usually garbage)
+4. filter-mito.sh 
+	- filteres out mitochondrial reads and unclassified bacteria sp. which are usually garbage
 
-5. taxonomy-no-mito.sh (redo taxonomy without the mitochondrial reads)
+5. taxonomy-no-mito.sh 
+	- redo taxonomy without the mitochondrial reads
 
-6. diversity.sh (alpha and beta diversity)
+6. diversity.sh 
+	- alpha and beta diversity
+	- single input is number to rarefy too
 
 7. beta-group-significance.sh 
 
