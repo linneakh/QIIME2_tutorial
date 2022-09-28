@@ -1,16 +1,31 @@
 #!/bin/bash
+#################SBATCH job######################
+#SBATCH --job-name=Taxonomy
+#SBATCH --ntasks=28
+#SBATCH --nodes=1
+#SBATCH --mem=100gb
+#SBATCH --time=10:00:00
+#SBATCH --partition=standard
+#SBATCH --account=laurameredith
+#SBATCH --mail-user=linneah@hpc.arizona.edu
+##################################################
 
-module load unsupported
-module load donata/miniconda/3/3
-source activate qiime2-2019.10
-cd ..
+#############load programs here####################
+module load anaconda/2022.05
+source activate qiime2-2022.8
+##################################################
 
+#############set directory here####################
+cd ~/qiime2-atacama-tutorial/
+###################################################
+
+############enter script here#####################
 set -u
 
-#wget -O "gg-13-8-99-515-806-nb-classifier.qza" "https://data.qiime2.org/2018.4/common/gg-13-8-99-515-806-nb-classifier.qza"
+wget -O "gg-13-8-99-515-806-nb-classifier.qza" "https://data.qiime2.org/2022.8/common/gg-13-8-99-515-806-nb-classifier.qza"
 
 qiime feature-classifier classify-sklearn \
-  --i-classifier taxonomy/gg-13-8-99-515-806-nb-classifier.qza \
+  --i-classifier gg-13-8-99-515-806-nb-classifier.qza \
   --i-reads rep-seqs.qza \
   --o-classification taxonomy.qza
 
@@ -21,7 +36,7 @@ qiime metadata tabulate \
 qiime taxa barplot \
   --i-table table.qza \
   --i-taxonomy taxonomy.qza \
-  --m-metadata-file sample_metadata.txt \
+  --m-metadata-file sample-metadata.tsv \
   --o-visualization taxa-bar-plots.qzv
 
 qiime taxa collapse \
@@ -69,7 +84,7 @@ qiime tools export \
 	--output-path exported-table-l6
 
 qiime tools export \
-        --input-path table-5.qza \
+        --input-path table-l5.qza \
         --output-path exported-table-l5
 
 qiime tools export \
@@ -124,11 +139,11 @@ qiime metadata tabulate \
 	--m-input-file taxonomy.qza \
 	--o-visualization table-tabulated-combined-otu-taxonomy.qzv	
 
-mkdir taxonomy-no-mito
-mv tax*.qz* taxonomy-no-mito/
-mv table-* taxonomy-no-mito/
-mv exported* taxonomy-no-mito/
-mv gg* taxonomy-no-mito/
+mkdir taxonomy
+mv tax*.qz* taxonomy/
+mv table-* taxonomy/
+mv exported* taxonomy/
+mv gg* taxonomy/
 
 echo done
 
